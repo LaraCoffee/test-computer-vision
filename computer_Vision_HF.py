@@ -3,15 +3,17 @@ import requests
 from PIL import Image
 import io
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
-load_dotenv()  # Load variables from .env
+# load_dotenv()  # Load variables from .env
 
 
 
 # --- Hugging Face API ---
 API_URL = "https://api-inference.huggingface.co/models/google/vit-base-patch16-224"
-API_TOKEN = os.getenv("HF_Token")
+API_TOKEN = st.secrets["HF_Token"]
+
+# API_TOKEN = os.getenv("HF_Token")
 HEADERS = {
     "Authorization": f"Bearer {API_TOKEN}",
     # We set Content-Type dynamically based on image format below

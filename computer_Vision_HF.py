@@ -61,12 +61,33 @@ HEADERS = {
 }
 
 def classify(image_bytes, mime_type):
-    headers = {**HEADERS, "Content-Type": mime_type}
+    # Optional: You can log the MIME type if you're unsure what it is
+    st.write("DEBUG: mime_type =", mime_type)
+
+    # Use application/octet-stream or let requests auto-detect
+    headers = {**HEADERS, "Content-Type": "application/octet-stream"}
+    
     st.write("DEBUG: sending request with headers:", headers)
-    resp = requests.post(API_URL, headers=headers, data=image_bytes)
+
+    try:
+        resp = requests.post(API_URL, headers=headers, data=image_bytes)
+    except Exception as e:
+        st.error("Request failed to reach Hugging Face API.")
+        st.exception(e)
+        return None
+
     st.write("DEBUG: response status:", resp.status_code)
-    st.write("DEBUG: response text:", resp.text[:200])
-    return resp
+    st.write("DEBUG: response text (first 200 chars):", resp.text[:200])
+
+    try:
+        response_json = resp.json()
+        st.write("DEBUG: Parsed JSON Response:", response_json)
+        return response_json
+    except Exception as e:
+        st.error("❌ Failed to parse JSON response from Hugging Face.")
+        st.code(resp.text, language="text")
+        st.exception(e)
+        return None
 
 uploaded = st.file_uploader("Upload image", type=["png","jpg","jpeg"])
 if uploaded:

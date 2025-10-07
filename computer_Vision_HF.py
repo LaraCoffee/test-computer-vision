@@ -10,8 +10,8 @@ import os
 
 
 # --- Hugging Face API ---
-API_URL = "https://api-inference.huggingface.co/models/google/vit-base-patch16-224"
 API_TOKEN = st.secrets["HF_Token"]
+API_URL = "https://api-inference.huggingface.co/models/google/vit-base-patch16-224"
 
 # API_TOKEN = os.getenv("HF_Token")
 HEADERS = {
